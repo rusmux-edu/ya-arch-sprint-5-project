@@ -1,0 +1,39 @@
+assistant_id: arch_assistant
+language: ru
+
+pipeline:
+  - name: WhitespaceTokenizer
+  - name: RegexFeaturizer
+    case_sensitive: false
+  - name: LexicalSyntacticFeaturizer
+  - name: CountVectorsFeaturizer
+    analyzer: char_wb
+    min_ngram: 1
+    max_ngram: 5
+
+  - name: LanguageModelFeaturizer
+    model_name: bert
+    model_weights: cointegrated/rubert-tiny2
+
+  - name: DIETClassifier
+    epochs: 10
+    transformer_size: 64
+    number_of_transformer_layers: 2
+    use_masked_language_model: true
+    constrain_similarities: true
+    batch_strategy: balanced
+    hidden_layers_sizes:
+      text: [64]
+
+  - name: EntitySynonymMapper
+  - name: ResponseSelector
+    epochs: 10
+
+policies:
+  - name: MemoizationPolicy
+    max_history: 3
+  - name: RulePolicy
+  - name: TEDPolicy
+    max_history: 3
+    epochs: 10
+    constrain_similarities: true
