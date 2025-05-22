@@ -1,0 +1,18 @@
+[project]
+name = "backend"
+version = "0.1.0"
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+
+dependencies = [
+    "rasa>=3.6.21",
+    "transformers>=4.52.3",
+    "hf-xet>=1.1.2",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["rasa"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
